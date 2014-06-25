@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git@github.com:Scrimmage/karma-slim-preprocessor.git"
   },
   "keywords": [
     "karma",
