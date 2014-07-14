@@ -47,7 +47,7 @@ module.exports = (grunt) ->
     bump:
       options:
         commitMessage: 'chore: release v%VERSION%'
-        pushTo: 'upstream'
+        pushTo: 'origin'
 
   grunt.loadNpmTasks 'grunt-simple-mocha'
   grunt.loadNpmTasks 'grunt-contrib-jshint'
