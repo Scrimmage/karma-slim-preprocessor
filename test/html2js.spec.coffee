@@ -30,5 +30,3 @@ describe 'preprocessors slim2html', ->
     process '', file, (processedContent) ->
       expect(processedContent).to.equal('<h1>Hello</h1><div class="dece">And welcome!</div>\n')
       done()
-
-

@@ -21,8 +21,11 @@ module.exports = function(config) {
     files: [
       '**/*.js',
       '**/*.slim',
-    ]
+    ],
+    slimPreprocessor: {
+      // provide the location of a slimrb binary by uncommenting the next line.
+      // slimrb: '/usr/local/bin/slimrb'
+    }
   });
 };
 ```
-
