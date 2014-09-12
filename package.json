@@ -1,6 +1,6 @@
 {
-  "name": "karma-slim-preprocessor",
-  "version": "0.0.4",
+  "name": "karma-slim-preprocessor-with-binary-option",
+  "version": "0.0.5",
   "description": "A Karma plugin. Compile slim files to html on the fly",
   "main": "lib/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:Scrimmage/karma-slim-preprocessor.git"
+    "url": "git@github.com:arkarkark/karma-slim-preprocessor.git"
   },
   "keywords": [
     "karma",
@@ -17,7 +17,7 @@
     "slim",
     "slimrb"
   ],
-  "author": "Mike Frawley <frawl021@gmail.com>",
+  "author": "arkarkark",
   "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.1",
@@ -33,5 +33,7 @@
     "karma": ">=0.9"
   },
   "license": "MIT",
-  "contributors": []
+  "contributors": [
+    "Mike Frawley <frawl021@gmail.com>"
+  ]
 }
