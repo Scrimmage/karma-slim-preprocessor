@@ -5,6 +5,8 @@
 It requires the slimrb binary to be on your path, which will be present if slim
 is installed by bundler.
 
+## Installation
+
 ```bash
 npm install karma-slim-preprocessor --save-dev
 ```
