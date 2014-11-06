@@ -1,22 +1,22 @@
 var util = require('util');
-var spawn = require('child_process').spawn
+var spawn = require('child_process').spawn;
 
-var createSlimPreprocessor = function(logger) {
+function createSlimPreprocessor(logger) {
   var log = logger.create('preprocessor.slim');
 
   return function(content, file, done) {
-    var child, html, origPath
+    var child, html, origPath;
 
     log.debug('Processing "%s".', file.originalPath);
 
-    origPath = file.originalPath
-    html = ''
-    child = spawn("slimrb", [origPath])
+    origPath = file.originalPath;
+    html = '';
+    child = spawn("slimrb", [origPath]);
 
     child.on('error', function (error) {
       if (error.code == 'ENOENT') {
-        log.error("It does not appear as though `slimrb` is installed. Try running `bundle install` in your project.")
-        done('')
+        log.error("It does not appear as though `slimrb` is installed. Try running `bundle install` in your project.");
+        done('');
       }
     });
 
@@ -32,8 +32,12 @@ var createSlimPreprocessor = function(logger) {
       throw String(buf);
     });
   };
-};
+}
 
 createSlimPreprocessor.$inject = ['logger'];
 
-module.exports = createSlimPreprocessor;
+module.exports = {
+  'preprocessor:slim': ['factory', createSlimPreprocessor]
+};
+
+

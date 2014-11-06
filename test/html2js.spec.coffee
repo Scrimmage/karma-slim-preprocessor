@@ -1,12 +1,12 @@
 describe 'preprocessors slim2html', ->
   chai = require('chai')
-
   templateHelpers = require('./helpers/template_cache')
-  chai.use(templateHelpers)
+  slim2html = require('../index')['preprocessor:slim'][1]
+  console.log slim2html
 
+  chai.use(templateHelpers)
   {expect} = chai
 
-  slim2html = require '../lib/slim2html'
   logger = create: -> {debug: ->}
   process = null
 
