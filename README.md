@@ -12,12 +12,18 @@ npm install karma-slim-preprocessor --save-dev
 ```
 
 ## Configuration
+
 ```js
 // karma.conf.js
 module.exports = function(config) {
   config.set({
     preprocessors: {
       '**/*.slim': ['slim']
+    },
+
+    slimPreprocessor: {
+      // If slimrb is not in your PATH, you can specify where it is:
+      slimrb: "/usr/local/slimrb"
     },
 
     files: [
