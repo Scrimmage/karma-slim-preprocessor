@@ -4,7 +4,7 @@
   "description": "A Karma plugin. Compile slim files to html on the fly",
   "main": "lib/index.js",
   "scripts": {
-    "test": "npm test"
+    "test": "grunt test"
   },
   "repository": {
     "type": "git",

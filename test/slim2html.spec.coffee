@@ -13,13 +13,14 @@ describe 'preprocessors slim2html', ->
 
   noop = ->
 
-  logged = {
-    debug: ''
-    info: ''
-    error: ''
-  }
+  logged = null
   logger = create: ->
-    {
+    logged = {
+      debug: ''
+      info: ''
+      error: ''
+    }
+    return {
       debug: (msg) -> logged.debug += msg
       info: (msg) -> logged.info += msg
       error: (msg) -> logged.error += msg
