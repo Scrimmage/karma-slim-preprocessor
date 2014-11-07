@@ -45,8 +45,8 @@ describe 'preprocessors slim2html', ->
     file = new File 'test/fixtures/invalid.slim'
     process = slim2html({}, logger)
     process '', file, (result) ->
-      expect(result).to.equal(null)
-      expect(logged.error).to.match(/SyntaxError: Malformed indentation/)
+      expect(result).to.equal('')
+      expect(logged.error).to.include("SyntaxError: Malformed indentation")
       done()
 
   it 'allows configuring the path of the slimrb binary', (done) ->
@@ -60,6 +60,8 @@ describe 'preprocessors slim2html', ->
     file = new File 'test/fixtures/index.slim'
     process = slim2html({ slimrb: "foooooooooooo" }, logger)
     process '', file, (result) ->
-      console.log('done')
+      expect(result).to.equal('')
+      expect(logged.error).to.include("bundle install")
+      expect(logged.error).to.include("slimPreprocessor: { slimrb: '/usr/local/slimrb' }`")
       done()
 
