@@ -2,11 +2,11 @@ var util = require('util');
 var spawn = require('child_process').spawn;
 
 function createSlimPreprocessor(config, logger) {
-  var log, slimCommand;
+  var log, slimrb;
 
   config = config || {};
   log = logger.create('preprocessor.slim');
-  slimCommand = config.command || 'slimrb';
+  slimrb = config.slimrb || 'slimrb';
 
   return function(content, file, done) {
     var child, html, path, hadError;
@@ -15,7 +15,7 @@ function createSlimPreprocessor(config, logger) {
 
     path = file.originalPath;
     html = ''
-    child = spawn(slimCommand, [path]);
+    child = spawn(slimrb, [path]);
 
     // Handle an error in the command, such as slimrb not found
     child.on('error', function (error) {
@@ -24,11 +24,13 @@ function createSlimPreprocessor(config, logger) {
           "It does not appear as though `slimrb` is installed.\n" +
           "You may need to run `bundle install` in your project, or install it globally.\n" +
           "If you're having PATH issues you can configure where slimrb, inside your karma config file:\n\t" +
-          "slimPreprocessor: { command: '/usr/local/slimrb' }`"
+          "slimPreprocessor: { slimrb: '/usr/local/slimrb' }`"
         );
       }
-      hadError = true;
-      done(null);
+      if(!hadError) {
+        hadError = true;
+        done('');
+      }
     });
 
     // Handle an error from stderr, which would be a slim syntax error
@@ -36,7 +38,8 @@ function createSlimPreprocessor(config, logger) {
       // We already had a command error, don't call done twice
       if(!hadError) {
         hadError = true;
-        done("Error compiling slim template '" + path + "'" + String(buf));
+        log.error("Error compiling slim template:\n" + String(buf));
+        done('');
       }
     });
 
