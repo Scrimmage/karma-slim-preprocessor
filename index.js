@@ -1,46 +1,43 @@
 var util = require('util');
 var spawn = require('child_process').spawn;
+var which = require('shelljs').which;
 
 function createSlimPreprocessor(config, logger) {
-  var log, slimrb;
+  var log, slimCommand, slimCommandAbsolute;
 
   config = config || {};
   log = logger.create('preprocessor.slim');
-  slimrb = config.slimrb || 'slimrb';
+  slimCommand = config.slimrb || 'slimrb';
+  slimCommandAbsolute = which(slimCommand);
+  log.debug('Found slim command `' + slimCommand + '` at: `' + slimCommandAbsolute + '`');
 
-  return function(content, file, done) {
-    var child, html, path, hadError;
+  if(!slimCommandAbsolute) {
+    log.error(
+      "Could not find the slimrb command in your path: `" + slimCommand + "`\n" +
+      "You may need to run `bundle install` in your project, or install it globally.\n" +
+      "Or, you can configure where slimrb is inside your karma config file with:\n\t" +
+      "slimPreprocessor: { slimrb: '/usr/local/slimrb' }`"
+    );
+    throw new Error("slimrb command not found");
+  }
+
+  return function(content, file, _done) {
+    var child, html, path, isDone, done;
 
     log.debug('Processing "%s".', file.originalPath);
 
+    done = function(str) {
+      if(!isDone) _done(str);
+      isDone = true;
+    };
     path = file.originalPath;
-    html = ''
-    child = spawn(slimrb, [path]);
-
-    // Handle an error in the command, such as slimrb not found
-    child.on('error', function (error) {
-      if (error.code === 'ENOENT') {
-        log.error(
-          "It does not appear as though `slimrb` is installed.\n" +
-          "You may need to run `bundle install` in your project, or install it globally.\n" +
-          "If you're having PATH issues you can configure where slimrb, inside your karma config file:\n\t" +
-          "slimPreprocessor: { slimrb: '/usr/local/slimrb' }`"
-        );
-      }
-      if(!hadError) {
-        hadError = true;
-        done('');
-      }
-    });
+    html = '';
+    child = spawn(slimCommandAbsolute, [path]);
 
     // Handle an error from stderr, which would be a slim syntax error
     child.stderr.on('data', function (buf) {
-      // We already had a command error, don't call done twice
-      if(!hadError) {
-        hadError = true;
-        log.error("Error compiling slim template:\n" + String(buf));
-        done('');
-      }
+      log.error("Error compiling slim template:\n" + String(buf));
+      done('');
     });
 
     child.stdout.on('data', function (buf) {
@@ -48,12 +45,8 @@ function createSlimPreprocessor(config, logger) {
     });
 
     child.stdout.on('close', function (buf) {
-      // Don't call done again if we had a syntax error
-      if(!hadError) {
-        done(html);
-      }
+      done(html);
     });
-
   };
 }
 
@@ -62,5 +55,4 @@ createSlimPreprocessor.$inject = ['config.slimPreprocessor', 'logger'];
 module.exports = {
   'preprocessor:slim': ['factory', createSlimPreprocessor]
 };
-
 

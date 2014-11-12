@@ -57,15 +57,12 @@ describe 'preprocessors slim2html', ->
       expect(result).to.equal('<h1>Hello</h1><div class="dece">And welcome!</div>\n')
       done()
 
-  it 'logs an error given an invalid slim command configuration', (done) ->
-    console.log(1)
+  it 'throws and logs an error given an invalid slim command configuration', (done) ->
     file = new File 'test/fixtures/index.slim'
-    process = slim2html({ slimrb: "foooooooooooo" }, logger)
-    console.log(2)
-    process '', file, (result) ->
-      console.log(3)
-      expect(result).to.equal('')
-      expect(logged.error).to.include("bundle install")
-      expect(logged.error).to.include("slimPreprocessor: { slimrb: '/usr/local/slimrb' }`")
-      done()
+    expect( ->
+      process = slim2html({ slimrb: "foooooooooooo" }, logger)
+    ).to.throw("slimrb command not found")
+    expect(logged.error).to.include("bundle install")
+    expect(logged.error).to.include("slimPreprocessor: { slimrb: '/usr/local/slimrb' }`")
+    done()
 

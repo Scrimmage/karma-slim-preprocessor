@@ -18,7 +18,9 @@
     "slimrb"
   ],
   "author": "Mike Frawley <frawl021@gmail.com>",
-  "dependencies": {},
+  "dependencies": {
+    "shelljs": "^0.3.0"
+  },
   "devDependencies": {
     "chai": "~1.4",
     "grunt": "~0.4.1",
