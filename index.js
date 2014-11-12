@@ -21,15 +21,11 @@ function createSlimPreprocessor(config, logger) {
     throw new Error("slimrb command not found");
   }
 
-  return function(content, file, _done) {
-    var child, html, path, isDone, done;
+  return function(content, file, done) {
+    var child, html, path;
 
     log.debug('Processing "%s".', file.originalPath);
 
-    done = function(str) {
-      if(!isDone) _done(str);
-      isDone = true;
-    };
     path = file.originalPath;
     html = '';
     child = spawn(slimCommandAbsolute, [path]);
@@ -37,7 +33,6 @@ function createSlimPreprocessor(config, logger) {
     // Handle an error from stderr, which would be a slim syntax error
     child.stderr.on('data', function (buf) {
       log.error("Error compiling slim template:\n" + String(buf));
-      done('');
     });
 
     child.stdout.on('data', function (buf) {
