@@ -47,7 +47,7 @@ describe 'preprocessors slim2html', ->
     process = slim2html({}, logger)
     process '', file, (result) ->
       expect(result).to.equal('')
-      expect(logged.error).to.include("SyntaxError: Malformed indentation")
+      expect(logged.error).to.include("Error compiling slim template")
       done()
 
   it 'allows configuring the path of the slimrb binary', (done) ->
