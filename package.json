@@ -36,7 +36,5 @@
     "karma": ">=0.9"
   },
   "license": "MIT",
-  "contributors": [
-    "arkarkark"
-  ]
+  "contributors": []
 }
