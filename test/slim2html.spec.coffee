@@ -38,22 +38,22 @@ describe 'preprocessors slim2html', ->
   it 'converts slim to html', (done) ->
     file = new File 'test/fixtures/index.slim'
     process = slim2html({}, logger)
-    process '', file, (result) ->
+    process '', file, (err, result) ->
       expect(result).to.equal('<h1>Hello</h1><div class="dece">And welcome!</div>\n')
       done()
 
   it 'logs an error given invalid slim markup', (done) ->
     file = new File 'test/fixtures/invalid.slim'
     process = slim2html({}, logger)
-    process '', file, (result) ->
-      expect(result).to.equal('')
-      expect(logged.error).to.include("Error compiling slim template")
+    process '', file, (err, result) ->
+      expect(result).to.equal(null)
+      expect(logged.error).to.include("Malformed indentation")
       done()
 
   it 'allows configuring the path of the slimrb binary', (done) ->
     file = new File 'test/fixtures/index.slim'
     process = slim2html({ slimrb: slimCommand }, logger)
-    process '', file, (result) ->
+    process '', file, (err, result) ->
       expect(result).to.equal('<h1>Hello</h1><div class="dece">And welcome!</div>\n')
       done()
 

@@ -22,7 +22,7 @@ function createSlimPreprocessor(config, logger) {
   }
 
   return function(content, file, done) {
-    var child, html, path;
+    var child, html, path, hadError;
 
     log.debug('Processing "%s".', file.originalPath);
 
@@ -32,7 +32,9 @@ function createSlimPreprocessor(config, logger) {
 
     // Handle an error from stderr, which would be a slim syntax error
     child.stderr.on('data', function (buf) {
-      log.error("Error compiling slim template:\n" + String(buf));
+      hadError = true;
+      log.error(String(buf));
+      done(String(buf), null);
     });
 
     child.stdout.on('data', function (buf) {
@@ -40,7 +42,9 @@ function createSlimPreprocessor(config, logger) {
     });
 
     child.stdout.on('close', function (buf) {
-      done(html);
+      if(!hadError) {
+        done(null, html);
+      }
     });
   };
 }
@@ -50,4 +54,5 @@ createSlimPreprocessor.$inject = ['config.slimPreprocessor', 'logger'];
 module.exports = {
   'preprocessor:slim': ['factory', createSlimPreprocessor]
 };
+
 
