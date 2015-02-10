@@ -57,6 +57,17 @@ describe 'preprocessors slim2html', ->
       expect(result).to.equal('<h1>Hello</h1><div class="dece">And welcome!</div>\n')
       done()
 
+  it 'allows configuring the path of the slimrb binary with the cli options', (done) ->
+    file = new File 'test/fixtures/variable.slim'
+    slimData =
+      foo: "Foooo"
+      bar: "Baaar"
+    slimDataJsonStr = JSON.stringify(slimData)
+    process = slim2html({ slimrb: slimCommand, slimrbOption: '-l ' + slimDataJsonStr }, logger)
+    process '', file, (err, result) ->
+      expect(result).to.equal('<p>Foo: Foooo!</p><p>Bar: Baaar!</p>\n')
+      done()
+
   it 'throws and logs an error given an invalid slim command configuration', (done) ->
     file = new File 'test/fixtures/index.slim'
     expect( ->

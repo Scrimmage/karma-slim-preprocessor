@@ -4,6 +4,7 @@ var which = require('shelljs').which;
 
 function createSlimPreprocessor(config, logger) {
   var log, slimCommand, slimCommandAbsolute;
+  var slimCommandArgs = [];
 
   config = config || {};
   log = logger.create('preprocessor.slim');
@@ -21,6 +22,11 @@ function createSlimPreprocessor(config, logger) {
     throw new Error("slimrb command not found");
   }
 
+  if(typeof(config.slimrbOption) === 'string') {
+    log.debug('Passing args to slim command (%s).', config.slimrbOption);
+    slimCommandArgs.push(config.slimrbOption);
+  }
+
   return function(content, file, done) {
     var child, html, path, hadError;
 
@@ -28,7 +34,7 @@ function createSlimPreprocessor(config, logger) {
 
     path = file.originalPath;
     html = '';
-    child = spawn(slimCommandAbsolute, [path]);
+    child = spawn(slimCommandAbsolute, slimCommandArgs.concat(path));
 
     // Handle an error from stderr, which would be a slim syntax error
     child.stderr.on('data', function (buf) {
