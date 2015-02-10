@@ -25,7 +25,10 @@ module.exports = function(config) {
 
     slimPreprocessor: {
       // If slimrb is not in your PATH, you can specify where it is:
-      slimrb: "/usr/local/slimrb"
+      slimrb: "/usr/local/slimrb",
+      
+      // You can pass additional command line options to slimrb:
+      slimrbOption: '-l { "foosball": true }'
     },
 
     files: [
