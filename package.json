@@ -1,6 +1,6 @@
 {
   "name": "karma-slim-preprocessor",
-  "version": "0.0.7",
+  "version": "1.0.0",
   "description": "A Karma plugin. Compile slim files to html on the fly",
   "main": "lib/index.js",
   "scripts": {
