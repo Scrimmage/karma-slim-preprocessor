@@ -25,6 +25,8 @@ function createSlimPreprocessor(config, logger) {
   if(typeof(config.slimrbOption) === 'string') {
     log.debug('Passing args to slim command (%s).', config.slimrbOption);
     slimCommandArgs.push(config.slimrbOption);
+  } else if(config && Array.isArray(config.slimrbOption)){
+    slimCommandArgs = config.slimrbOption;
   }
 
   return function(content, file, done) {
