@@ -28,7 +28,7 @@ module.exports = function(config) {
       slimrb: "/usr/local/slimrb",
       
       // You can pass additional command line options to slimrb:
-      slimrbOption: '-l { "foosball": true }'
+      slimrbOption: '-l { "foosball": true }' // or as array ['-l { "foosball": true }', '-r slim/smart']
     },
 
     files: [
